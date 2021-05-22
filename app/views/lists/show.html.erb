@@ -1,4 +1,27 @@
 <div class="container">
  <h1><%= @list.name %></h1>
+ <div class="row my-2">
+   <%= @list.movies.each do |movie| %>
+   <%= movie.title %>
+      <% bookmark = Bookmark.find_by(list: @list, movie: movie) %>
+      <div class="col-12 col-sm-6 mb-4" data-aos="zoom-in">
+        <div class="bg-white rounded shadow h-100">
+          <%= image_tag movie.poster_url, alt: movie.title, class: 'movie-img rounded-top', style: 'width: 540px; height: 210px'%>
+          <div class="p-3 rounded-bottom d-flex flex-column">
+            <strong><%= movie.title %> <span class="text-muted font-weight-normal">• <%= movie.rating %> <i class="fas fa-star star-yellow"></i></span></strong>
+            <small class="text-muted"><%= movie.overview %></small>
+            <div class="d-flex align-items-end justify-content-between pt-4">
+              <div>
+                <i class="fas fa-quote-left mr-2"></i><small class="flex-grow-1"><%= bookmark.comment %></small>
+              </div>
+              <small class="text-right flex-shrink-0"><%= link_to 'watch it here now', "https://www.amazon.de/Life-Year-OV-Jaden-Smith/dp/B08ZJPWVNC/ref=sr_1_1?__mk_de_DE=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=life+in+a+year&qid=1621677763&sr=8-1" %></small>
+              <small class="text-right flex-shrink-0"><%= link_to 'delete', bookmark_path(bookmark), method: :delete, data: { confirm: "Are you sure you want to remove #{movie.title} from your #{@list.name} list"}, class: 'text-danger' %></small>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
   <%= link_to "Add a new Bookmark", new_list_bookmark_path(@list)  %>
 </div>
+
